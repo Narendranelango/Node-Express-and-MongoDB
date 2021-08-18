@@ -8,26 +8,41 @@ const connect = mongoose.connect(url);
 connect.then((db) => {
 
     console.log('Connected correctly to server');
-
-     Dishes.create({
-        name: 'Uthappizza',
-        description: 'test'
+    Dishes.create({
+        name: 'Szechuan Chicken Fried Rice',
+        description: 'test1'
     })
-        .then((dish) => {
-            console.log(dish);
-            console.log('Done Find');
-            return Dishes.find({});
+    .then((dish) => {
+        console.log(dish);
+        console.log('Implemented Find By Id And Update');
+        return Dishes.findByIdAndUpdate(dish._id, {
+            $set: { description: 'Updated test'}
+        },{ 
+            new: true 
         })
-        .then((dishes) => {
-            console.log(dishes);
-            console.log('Done Remove');
-            return Dishes.remove({});
-        })
-        .then(() => {
-            return mongoose.connection.close();
-        })
-        .catch((err) => {
-            console.log(err);
+        .exec();
+    })
+    .then((dish) => {
+        console.log(dish);
+        console.log('Implemented dish and comments');
+        dish.comments.push({
+            rating: 5,
+            comment: 'I\'m getting a sinking feeling!',
+            author: 'Leonardo di Carpaccio'
         });
 
+        return dish.save();
+    })
+    .then((dish) => {
+        console.log(dish);
+        console.log('Implemented Remove Dish');
+        return Dishes.remove({});
+    })
+    .then(() => {
+        return mongoose.connection.close();
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+    
 });
