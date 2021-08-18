@@ -5,14 +5,15 @@ const url = 'mongodb://localhost:27017/';
 const dbname = 'MongoDB';
 const dboper = require('./operations');
 
-MongoClient.connect(url, (err, client) => {
+MongoClient.connect(url, (err, client) => {//Used to connect with server
 
-    assert.equal(err,null);
+    assert.equal(err,null);//Checks Whether null with error.
 
     console.log('Connected correctly to server');
 
     const db = client.db(dbname);
 
+    //Implemented in Nested
     dboper.insertDocument(db, { name: "Vadonut", description: "Test"},
     "dishes", (result) => {
         console.log("Insert Document:\n", result.ops);
@@ -38,5 +39,6 @@ MongoClient.connect(url, (err, client) => {
         });
 });
 
-               
+
+
 });

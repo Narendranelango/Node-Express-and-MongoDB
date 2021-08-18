@@ -1,5 +1,4 @@
 //This Class encapsulates all the database operations
-
 const assert = require('assert');
 
 exports.insertDocument = (db, document, collection, callback) => {
@@ -8,7 +7,7 @@ exports.insertDocument = (db, document, collection, callback) => {
         assert.equal(err, null);
         console.log("Inserted " + result.result.n +
             " documents into the collection " + collection);
-        callback(result);
+        callback(result);//Implements Callback Function and Prints the result.
     });
 };
 
