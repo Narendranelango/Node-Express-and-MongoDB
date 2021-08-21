@@ -14,13 +14,19 @@ var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 
+var config = require('./config');
+
+
+
+
+
 const mongoose = require('mongoose');
 
 const Dishes = require('./models/dishes');
 const Promotions = require('./models/promotions');
 const Leaders = require('./models/leaders');
 
-const url = 'mongodb://localhost:27017/MongoDB';
+const url = config.mongoUrl;//config.js
 
 const connect = mongoose.connect(url);
 connect.then((db) => {
@@ -52,26 +58,27 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-function auth(req,res,next){
+// function auth(req,res,next){
 
-  if(!req.user){
-    var err = new Error('You are not authenticated!');
-    err.status = 401; 
-    return next(err);
-  }
+//   if(!req.user){
+//     var err = new Error('You are not authenticated!');
+//     err.status = 401; 
+//     return next(err);
+//   }
 
-  else{
-    next();
-  }
-}
+//   else{
+//     next();
+//   }
+// }
 
-app.use(auth);
+// app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/dishes',dishRouter);
 app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
+
 
 
 // catch 404 and forward to error handler
