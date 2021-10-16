@@ -1,14 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const leadersRouter = express.Router();
 const Leaders= require('../models/leaders');
+const cors=require('./cors')
+
 leadersRouter.use(bodyParser.json());
 
 
 
 leadersRouter.route('/')
-.get((req,res,next) => {
+.options(cors.corsWithOptions,(req,res)=>{res.sendStatus(200);})
+.get(cors.cors,(req,res,next) => {
     Leaders.find({})
     .then((leaders) => {
         res.statusCode = 200;
@@ -18,7 +20,7 @@ leadersRouter.route('/')
     .catch((err) => next(err));
 })
 
-.post((req, res, next) => {
+.post(cors.corsWithOptions,(req, res, next) => {
     Leaders.create(req.body)
     .then((leader) => {
         console.log('Leader Created ', leader);
@@ -29,12 +31,12 @@ leadersRouter.route('/')
     .catch((err) => next(err));
 })
 
-.put((req, res, next) => {
+.put(cors.corsWithOptions,(req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /leaders');
 })
 
-.delete((req, res, next) => {
+.delete(cors.corsWithOptions,(req, res, next) => {
     Leaders.remove({})
     .then((orp) => {
         res.statusCode = 200;
@@ -45,8 +47,8 @@ leadersRouter.route('/')
 });
 
 leadersRouter.route('/:leaderId')
-
-.get((req,res,next) => {
+.options(cors.corsWithOptions,(req,res)=>{res.sendStatus(200);})
+.get(cors.cors,(req,res,next) => {
     Leaders.findById(req.params.leaderId)
     .then((leaders) => {
         res.statusCode = 200;
@@ -56,12 +58,12 @@ leadersRouter.route('/:leaderId')
     .catch((err) => next(err));
 })
 
-.post((req, res, next) => {
+.post(cors.corsWithOptions,(req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /leaders/'+ req.params.leaderId);
 })
 
-.put((req, res, next) => {
+.put(cors.corsWithOptions,(req, res, next) => {
     Leaders.findByIdAndUpdate(req.params.leaderId, {
         $set: req.body
     }, { new: true })
@@ -73,7 +75,7 @@ leadersRouter.route('/:leaderId')
     .catch((err) => next(err));
 })
 
-.delete((req, res, next) => {
+.delete(cors.corsWithOptions,(req, res, next) => {
    Leaders.findByIdAndRemove(req.params.leaderId)
     .then((resp) => {
         res.statusCode = 200;
