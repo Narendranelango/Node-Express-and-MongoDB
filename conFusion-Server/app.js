@@ -25,7 +25,7 @@ const mongoose = require('mongoose');
 const Dishes = require('./models/dishes');
 const Promotions = require('./models/promotions');
 const Leaders = require('./models/leaders');
-
+const uploadRouter = require('./routes/uploadRouter');
 const url = config.mongoUrl;//config.js
 
 const connect = mongoose.connect(url);
@@ -87,7 +87,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dishes',dishRouter);//router
 app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
-
+app.use('/imageUpload',uploadRouter);
 
 
 // catch 404 and forward to error handler
